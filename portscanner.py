@@ -14,7 +14,10 @@ def portscanner(remoteServer, start_port, end_port):
             result = sock.connect_ex((remoteServer, port))
             
             if result == 0:  #if connection is successful, connect_ex returns 0. Else a non-zero error code is returned which can be used to determine the cause of error.
-                service_name = socket.getservbyport(port)
+                try:
+                    service_name = socket.getservbyport(port)
+                except:
+                    service_name = "Unknown"
                 print("Port {}: Open - Service: {}".format(port, service_name))
                 
             sock.close()
@@ -44,16 +47,28 @@ t1=datetime.now()
 
 # Number of threads for concurrent scanning
 num_threads = 10
+
+
+total_ports = end_port - start_port + 1
+
 # Calculate the number of ports per thread
-ports_per_thread = (end_port - start_port + 1) // num_threads
+ports_per_thread = total_ports // num_threads
+
+# Any ports left to be scanned
+extra_ports = total_ports % num_threads
 
 threads = []
+
+current_start_port = start_port
+
 for i in range(num_threads):
-    start = start_port + i * ports_per_thread
-    end = min(start_port + (i + 1) * ports_per_thread - 1, end_port)
-    thread = threading.Thread(target=portscanner, args=(remoteServer, start, end))
+    current_end_port = current_start_port + ports_per_thread - 1
+    if i < extra_ports:
+        current_end_port += 1
+    thread = threading.Thread(target=portscanner, args=(remoteServer, current_start_port, current_end_port))
     thread.start()
     threads.append(thread)
+    current_start_port = current_end_port + 1
 
 for thread in threads:
     thread.join()
