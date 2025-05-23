@@ -1,13 +1,23 @@
 # PortScanner
 A multi-threaded Port Scanner made using `socket` and `threading` modules. Gives a list of open ports along with the services running on them.
 
+**NOTE:** The service identification is based on standard port numbers using `socket.getservbyport`. This may not reflect the actual service if a non-standard service is running on a given port.
+
 ## Usage
 1. Run the script.
-2. Enter the parameters:
-    - Remote host's address (IP address or hostname)
-    - Starting port of the scan range
-    - Ending port of the scan range
-3. It starts scanning and lists open ports and services running on them.
+2. Enter the IPv4 address or hostname of the target system.
 
-## Example
-![Screenshot 2024-05-16 054007](https://github.com/cs-vansh/PortScanner/assets/104628209/aecd4e7b-ed64-418c-aa6b-8d86761807aa)
+3. Choose between:
+   - Scanning a custom range of ports, or
+   - Scanning the top N most common ports (up to 8344).
+
+4. The scan begins and outputs:
+   - Open ports
+   - Associated service names (based on port numbers)
+
+
+## Future Scope:
+ - Complete & optimize UDP scanning (initial commented code present) 
+ - IPv6 support 
+ - Exporting scan results (CSV,JSON)
+ - More precise service detection
