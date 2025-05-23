@@ -46,9 +46,9 @@ def tcp_scan_for_range(host, start_port,end_port, total_ports):
         finally:
             if sock:
                 sock.close()
-            progress_count += 1
-            percent = (progress_count / total_ports) * 100
             with progress_lock:
+                progress_count += 1
+                percent = (progress_count / total_ports) * 100
                 print(f"{percent:.1f}% done", end='\r')         
 
 def tcp_scan_top_n(host, start_index,end_index,total_ports):
@@ -83,9 +83,9 @@ def tcp_scan_top_n(host, start_index,end_index,total_ports):
             if sock:
                 sock.close()
 
-            progress_count += 1
-            percent = (progress_count / total_ports) * 100
             with progress_lock:
+                progress_count += 1
+                percent = (progress_count / total_ports) * 100
                 print(f"{percent:.1f}% done", end='\r')
             
 """            
